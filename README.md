@@ -14,7 +14,7 @@ from movector.sqlalchemy import VectorF32
 
 engine = create_engine("mysql+pymysql://root:111@127.0.0.1:6001/a")
 with engine.connect() as conn:
-    results = conn.execute(text("SELECT 0;"))
+    results = conn.execute(text("SELECT 42;"))
 
 Base = declarative_base()
 
@@ -32,14 +32,14 @@ Base.metadata.create_all(engine)
 titles, ratings = get_movielens('100k')
 model = implicit.als.AlternatingLeastSquares(factors=20)
 model.fit(ratings)
+
 users = [dict(factors=factors) for i, factors in enumerate(model.user_factors)]
 
 session = Session(engine)
 session.execute(insert(User), users)
 
-user = session.get(User)
-print('user-based recs:', user.id, user.factors)
-
+user = session.get(User, 70)
+print('user-based recs:', [user.id, user.factors])
 ```
 
 Async Support: https://github.com/sqlalchemy/sqlalchemy/blob/main/examples/asyncio/basic.py
