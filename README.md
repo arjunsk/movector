@@ -40,6 +40,13 @@ session.execute(insert(User), users)
 
 user = session.get(User, 70)
 print('user-based recs:', [user.id, user.factors])
+
+# Prints:
+# user-based recs: [70, array([ 7.8333974 ,  8.490529  ,  8.774695  ,  9.268776  ,  6.0036736 ,
+#         6.134292  ,  0.19642895,  7.596437  ,  2.9758034 ,  7.9472003 ,
+#         4.068931  ,  0.58703905,  1.5298995 ,  5.9633737 ,  2.553488  ,
+#         4.9483128 , 10.799758  ,  0.6393655 ,  7.034949  ,  6.145868  ],
+#       dtype=float32)]
 ```
 
 Async Support: https://github.com/sqlalchemy/sqlalchemy/blob/main/examples/asyncio/basic.py
