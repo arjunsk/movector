@@ -27,14 +27,17 @@ class Item(Base):
 
 
 def run():
-    engine = create_engine("mysql+pymysql://root:111@127.0.0.1:6001/a")
+    # pgvector psycopg2 issue on PyCharm https://stackoverflow.com/a/72288416/1609570
+    # engine = create_engine("mysql+pymysql://postgres:111@127.0.0.1:5432/public")
+    engine = create_engine("postgresql+psycopg2://postgres:111@127.0.0.1:5432")
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
 
     # pgvector manjaro run1: Result: vector dim=1024 vectors inserted=40960 insert/second=940.058913141791
-    # mo       macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=274.54838430904914 StringCast
+    # pgvector macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=509.90686489099716
+    # mo       macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=377.54838430904914 StringCast
     # mo       macos   run2: Result: vector dim=1024 vectors inserted=40960 insert/second=2650.0632385796366 Binary
     # mo       macos   run3: Result: vector dim=1024 vectors inserted=40960 insert/second=2701.284438140351 BinaryString
     for i in range(num_inserts * num_vector_per_insert):

@@ -13,7 +13,9 @@ class VectorF32(UserDefinedType):
 
     def get_col_spec(self, **kw):
         if self.dim is None:
+            # return "VECTOR"
             return "ARRAY_FLOAT32"
+        # return "VECTOR(%d)" % self.dim
         return "ARRAY_FLOAT32(%d)" % self.dim
 
     def bind_processor(self, dialect):
