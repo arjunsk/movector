@@ -27,9 +27,7 @@ class Item(Base):
 
 
 def run():
-    # pgvector psycopg2 issue on PyCharm https://stackoverflow.com/a/72288416/1609570
     engine = create_engine("mysql+pymysql://root:111@127.0.0.1:6001/a")
-    # engine = create_engine("postgresql+psycopg2://postgres:111@127.0.0.1:5432")
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
