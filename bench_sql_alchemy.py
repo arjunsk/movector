@@ -37,7 +37,9 @@ def run():
 
     # pgvector manjaro run1: Result: vector dim=1024 vectors inserted=40960 insert/second=940.058913141791
     # pgvector macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=509.90686489099716
-    # mo       macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=377.54838430904914 StringCast
+    # mo       macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=340.54838430904914 Split (v1)
+    # mo       macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=312.77797824688696 ForLoop(v2)
+    # mo       macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=320.189254686237 ForLoop (v3)
     # mo       macos   run2: Result: vector dim=1024 vectors inserted=40960 insert/second=2650.0632385796366 Binary
     # mo       macos   run3: Result: vector dim=1024 vectors inserted=40960 insert/second=2701.284438140351 BinaryString
     for i in range(num_inserts * num_vector_per_insert):

@@ -1,5 +1,6 @@
+import binascii
+
 import numpy as np
-from struct import pack, unpack
 
 
 def from_db(value):
@@ -8,14 +9,6 @@ def from_db(value):
         return value
 
     return np.array(value[1:-1].split(','), dtype=np.float32)
-
-
-def from_db_binary(value):
-    if value is None:
-        return value
-
-    (dim, unused) = unpack('>HH', value[:4])
-    return np.frombuffer(value, dtype='>f', count=dim, offset=4).astype(dtype=np.float32)
 
 
 def to_db(value, dim=None):
@@ -37,7 +30,15 @@ def to_db(value, dim=None):
     return '[' + ','.join([str(float(v)) for v in value]) + ']'
 
 
-def to_db_binary(value):
+def from_db_binary(value):
+    if value is None:
+        return value
+
+    # (dim, unused) = unpack('>HH', value[:4])
+    return np.frombuffer(value, dtype='>f', offset=0).astype(dtype=np.float32)
+
+
+def to_db_binary(value, dim=None):
     if value is None:
         return value
 
@@ -46,4 +47,13 @@ def to_db_binary(value):
     if value.ndim != 1:
         raise ValueError('expected ndim to be 1')
 
-    return pack('>HH', value.shape[0], 0) + value.tobytes()
+    print(value)
+    print(value.tobytes())
+    print(str(list(value.tobytes())))
+    print(binascii.b2a_hex(value))
+    print(binascii.unhexlify(binascii.b2a_hex(value)))
+    print()
+
+    return binascii.b2a_hex(value)
+    # return repr(value.tobytes())[2:-1]
+    # return repr(value.tobytes())
