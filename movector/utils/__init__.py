@@ -1,6 +1,5 @@
-import binascii
-
 import numpy as np
+from struct import pack, unpack
 
 
 def from_db(value):
@@ -57,3 +56,4 @@ def to_db_binary(value, dim=None):
     return binascii.b2a_hex(value)
     # return repr(value.tobytes())[2:-1]
     # return repr(value.tobytes())
+
