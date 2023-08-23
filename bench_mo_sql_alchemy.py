@@ -19,9 +19,8 @@ def run():
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # pgvector manjaro run1: Result: vector dim=1024 vectors inserted=40960 insert/second=940.058913141791
-    # pgvector macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=509.90686489099716
-    # mo       macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=340.54838430904914 Split (v1)
+    # mo macos vector dim=1024 vectors inserted=40960 insert/second=2700.82418588553   Binary Insert
+    # mo macos vector dim=1024 vectors inserted=40960 insert/second=3395.4617004321026 Hex Insert
     sql_insert = text("insert into speedtest (id, one_k_vector) "
                       "values(:id, (cast( cast(:data as BLOB) as vecf32(:vec_len))));")
     for i in range(num_inserts * num_vector_per_insert):
