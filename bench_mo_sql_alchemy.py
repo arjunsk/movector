@@ -26,7 +26,7 @@ def run():
                       "values(:index, (cast( cast(:data as BLOB) as vecf32(:vec_len))));")
     for i in range(num_inserts * num_vector_per_insert):
         arr = np.random.rand(vec_len)
-        session.execute(sql_insert, {"table": table_name, "index": i, "data": to_db_binary(arr), "vec_len": vec_len})
+        session.execute(sql_insert, {"index": i, "data": to_db_binary(arr), "vec_len": vec_len})
     session.commit()
 
 
