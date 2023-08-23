@@ -22,7 +22,7 @@ def run():
     # pgvector manjaro run1: Result: vector dim=1024 vectors inserted=40960 insert/second=940.058913141791
     # pgvector macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=509.90686489099716
     # mo       macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=340.54838430904914 Split (v1)
-    sql_insert = text("insert into :table (id, one_k_vector) "
+    sql_insert = text("insert into speedtest (id, one_k_vector) "
                       "values(:index, (cast( cast(:data as BLOB) as vecf32(:vec_len))));")
     for i in range(num_inserts * num_vector_per_insert):
         arr = np.random.rand(vec_len)
