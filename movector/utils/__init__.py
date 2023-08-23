@@ -1,7 +1,4 @@
-import binascii
-
 import numpy as np
-from struct import pack, unpack
 
 
 def from_db(value):
@@ -47,4 +44,5 @@ def to_db_binary(value, dim=None):
     if value.ndim != 1:
         raise ValueError('expected ndim to be 1')
 
-    return binascii.b2a_hex(value)
+    return value.tobytes()
+    # return binascii.b2a_hex(value)
