@@ -1,48 +1,32 @@
-# pg database
-# CREATE EXTENSION vector;
-# pg table
-# CREATE TABLE speedtest (id bigserial PRIMARY KEY, one_k_vector vector(1024));
+# CREATE TABLE speedtest (id int PRIMARY KEY, one_k_vector vecf32(1024));
 
 import time
-import numpy as np
-from sqlalchemy import create_engine, Column, Integer
-from sqlalchemy.orm import sessionmaker, mapped_column, DeclarativeBase
 
-from movector.sqlalchemy import VectorF32
+import numpy as np
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import sessionmaker
+
+from movector.utils import to_db_binary
 
 table_name = "speedtest"
 vec_len = 1024
 num_inserts = 1024 * 8
-num_vector_per_insert = 5
-
-
-class Base(DeclarativeBase):
-    pass
-
-
-class Item(Base):
-    __tablename__ = table_name
-    id = Column(Integer(), primary_key=True)
-    one_k_vector = mapped_column(VectorF32(vec_len))
+num_vector_per_insert = 1024
 
 
 def run():
     engine = create_engine("mysql+pymysql://root:111@127.0.0.1:6001/a")
-    Base.metadata.drop_all(engine)
-    Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
 
     # pgvector manjaro run1: Result: vector dim=1024 vectors inserted=40960 insert/second=940.058913141791
     # pgvector macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=509.90686489099716
     # mo       macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=340.54838430904914 Split (v1)
-    # mo       macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=312.77797824688696 ForLoop(v2)
-    # mo       macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=320.189254686237 ForLoop (v3)
-    # mo       macos   run2: Result: vector dim=1024 vectors inserted=40960 insert/second=2650.0632385796366 Binary
-    # mo       macos   run3: Result: vector dim=1024 vectors inserted=40960 insert/second=2701.284438140351 BinaryString
+    sql_insert = text("insert into :table (id, one_k_vector) "
+                      "values(:index, (cast( cast(:data as BLOB) as vecf32(:vec_len))));")
     for i in range(num_inserts * num_vector_per_insert):
-        item = Item(one_k_vector=np.random.rand(vec_len))
-        session.add(item)
+        arr = np.random.rand(vec_len)
+        session.execute(sql_insert, {"table": table_name, "index": i, "data": to_db_binary(arr), "vec_len": vec_len})
     session.commit()
 
 
