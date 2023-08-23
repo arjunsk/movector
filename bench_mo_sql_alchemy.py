@@ -1,4 +1,4 @@
-# CREATE TABLE speedtest (id int, one_k_vector vecf32(1024));
+# CREATE TABLE speedtest (id int PRIMARY KEY, one_k_vector vecf32(1024));
 
 import time
 
@@ -11,7 +11,7 @@ from movector.utils import to_db_binary
 table_name = "speedtest"
 vec_len = 1024
 num_inserts = 1024 * 8
-num_vector_per_insert = 1024
+num_vector_per_insert = 5
 
 
 def run():
@@ -22,10 +22,10 @@ def run():
     # pgvector manjaro run1: Result: vector dim=1024 vectors inserted=40960 insert/second=940.058913141791
     # pgvector macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=509.90686489099716
     # mo       macos   run1: Result: vector dim=1024 vectors inserted=40960 insert/second=340.54838430904914 Split (v1)
-    sql_insert = text("insert into speedtest (one_k_vector) "
-                      "values((cast( cast(:data as BLOB) as vecf32(:vec_len))));")
+    sql_insert = text("insert into speedtest (id, one_k_vector) "
+                      "values(:id, (cast( cast(:data as BLOB) as vecf32(:vec_len))));")
     for i in range(num_inserts * num_vector_per_insert):
-        session.execute(sql_insert, {"data": to_db_binary(np.random.rand(vec_len)), "vec_len": vec_len})
+        session.execute(sql_insert, {"id": i, "data": to_db_binary(np.random.rand(vec_len)), "vec_len": vec_len})
     session.commit()
 
 
