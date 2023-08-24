@@ -32,6 +32,8 @@ async def run_benchmark():
         "password": "111",
     }
 
+    # Result: vector dim=4028 vectors inserted=40960 insert/second=599.42
+    # Result: vector dim=1024 vectors inserted=40960 insert/second=1241.68
     async with asyncpg.create_pool(**conn_params) as pool:
         async with pool.acquire() as connection:
             await create_table(connection)
