@@ -47,5 +47,5 @@ def to_db_binary(value, dim=None):
         raise ValueError('expected ndim to be 1')
 
     # print(value.tobytes())
-    # return value.tobytes()
-    return binascii.b2a_hex(value)
+    return value.tobytes()
+    # return binascii.b2a_hex(value)
