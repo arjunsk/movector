@@ -1,4 +1,4 @@
-# CREATE TABLE speedtest (id int, one_k_vector vecf32(1024));
+# CREATE TABLE speedtest (id int, one_k_vector vecf32(4096));
 
 import time
 
@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 from movector.utils import to_db_binary
 
 table_name = "speedtest"
-vec_len = 4048
+vec_len = 4096
 num_inserts = 1024 * 8
 num_vector_per_insert = 5
 
