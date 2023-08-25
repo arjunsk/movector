@@ -21,6 +21,10 @@ def run():
 
     # mo macos vector dim=1024 vectors inserted=40960 insert/second=2700.82418588553   Binary Insert
     # mo macos vector dim=1024 vectors inserted=40960 insert/second=3395.4617004321026 Hex Insert
+    # mo macos vector dim=4048 vectors inserted=_____ insert/second=400.4617004321026 Hex Insert
+    # mo macos vector dim=4048 vectors inserted=_____ insert/second=700.4617004321026 Bytes Insert
+    # mo macos vector dim=4048 vectors inserted=_____ insert/second=158.4617004321026 Bypass Insert
+    # pg macos vector dim=4048 vectors inserted=_____ insert/second=
     sql_insert = text("insert into speedtest (id, one_k_vector) "
                       "values(:id, (cast( cast(:data as BLOB) as vecf32(:vec_len))));")
     for i in range(num_inserts * num_vector_per_insert):
