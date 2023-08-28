@@ -1,3 +1,5 @@
+# CREATE DATABASE a;
+# USE a;
 # CREATE TABLE speedtest (id int, one_k_vector vecf32(1024));
 
 import time
