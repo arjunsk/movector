@@ -26,8 +26,7 @@ def run():
     # mo macos vector dim=4048 vectors inserted=40960 insert/second=298.7636314488123  Binary Insert
     # mo macos vector dim=4048 vectors inserted=40960 insert/second=675.2296546646446  Hex Insert
 
-    sql_insert = text("insert into speedtest (id, one_k_vector) "
-                      "values(:id, (cast( cast(:data as TEXT) as vecf32(:vec_len))));")
+    sql_insert = text("insert into speedtest (id, one_k_vector) values(:id, decode(:data,'hex') );")
     for i in range(num_inserts * num_vector_per_insert):
         arr = np.random.rand(vec_len)
         # print(arr)
